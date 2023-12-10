@@ -1,0 +1,9 @@
+<p>getbyid works!</p>
+<form  #myform="ngForm"  method="post"  class="container col-md-4" (ngSubmit)="getFormData(myform.value)">
+    <div class="form-group">
+    <label>Eid:</label><input type="number" class="form-control"  name="id"  #eidcontrol="ngModel"   required  ngModel>
+    <span  style="color: red;"  *ngIf="eidcontrol.touched && eidcontrol.invalid">Eid is Mandatory</span>
+    </div>
+
+    <button type="submit"  class="btn btn-warning" [disabled]="myform.invalid" >Search</button>
+    </form>
