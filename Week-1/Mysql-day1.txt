@@ -1,0 +1,77 @@
+CREATE TABLE `employee` (
+  `eid` INT NOT NULL,
+  `ename` VARCHAR(45) NULL,
+  `salary` DECIMAL NULL,
+  `comm` DECIMAL NULL,
+  `job` VARCHAR(45) NULL,
+  `doj` DATE NULL,
+  `mid` INT NULL,
+  PRIMARY KEY (`eid`));
+8);
+
+
+INSERT INTO `employee` (`ename`, `salary`, `comm`, `job`, `doj`, `mid`)
+VALUES
+    ('John Doe', 50000.00, 2000.00, 'Manager', '2023-01-01', NULL),
+    ('Jane Smith', 45000.00, NULL, 'Developer', '2023-02-15', 1),
+    ('Bob Johnson', 60000.00, 3000.00, 'Analyst', '2023-03-10', 1);
+
+
+ALTER TABLE `employee_db`.`employee`
+ADD COLUMN `department` VARCHAR(45) NULL;
+
+ALTER TABLE `employee_db`.`employee`
+MODIFY COLUMN `salary` INTEGER;
+
+ALTER TABLE `employee_db`.`employee`
+ADD CONSTRAINT `fk_manager`
+FOREIGN KEY (`mid`)
+REFERENCES `employee_db`.`employee`(`eid`);
+
+
+-- Add a new column 'department' of type VARCHAR(45)
+ALTER TABLE `employee_db`.`employee`
+ADD COLUMN `department` VARCHAR(45) NULL;
+
+-- Change the data type of 'salary' to INTEGER
+ALTER TABLE `employee_db`.`employee`
+MODIFY COLUMN `salary` INTEGER;
+
+-- Add a foreign key constraint on 'mid' referencing 'eid'
+ALTER TABLE `employee_db`.`employee`
+ADD CONSTRAINT `fk_manager`
+FOREIGN KEY (`mid`)
+REFERENCES `employee_db`.`employee`(`eid`);
+
+-- Insert a new employee
+INSERT INTO `employee_db`.`employee` (`ename`, `salary`, `comm`, `job`, `doj`, `mid`, `department`)
+VALUES
+    ('Alice Johnson', 55000.00, NULL, 'Analyst', '2023-04-05', 1, 'Finance');
+
+-- Insert another new employee
+INSERT INTO `employee_db`.`employee` (`ename`, `salary`, `comm`, `job`, `doj`, `mid`, `department`)
+VALUES
+    ('Charlie Brown', 48000.00, 1500.00, 'Developer', '2023-05-20', 2, 'IT');
+
+
+-- Insert a new employee
+INSERT INTO `employee_db`.`employee` (`ename`, `salary`, `comm`, `job`, `doj`, `mid`, `department`)
+VALUES
+    ('Alice Johnson', 55000.00, NULL, 'Analyst', '2023-04-05', 1, 'Finance');
+
+-- Insert another new employee
+INSERT INTO `employee_db`.`employee` (`ename`, `salary`, `comm`, `job`, `doj`, `mid`, `department`)
+VALUES
+    ('Charlie Brown', 48000.00, 1500.00, 'Developer', '2023-05-20', 2, 'IT');
+
+-- Update the job title for an employee
+UPDATE `employee_db`.`employee`
+SET `job` = 'Senior Developer'
+WHERE `ename` = 'Jane Smith';
+
+
+-- Delete an employee by ID
+DELETE FROM `employee_db`.`employee`
+WHERE `eid` = 3;
+
+

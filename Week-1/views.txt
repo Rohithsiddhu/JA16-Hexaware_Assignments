@@ -1,0 +1,42 @@
+mysql> CREATE TABLE `orders` (
+    ->   `order_id` INT AUTO_INCREMENT NOT NULL,
+    ->   `product_name` VARCHAR(50) NOT NULL,
+    ->   `quantity` INT NOT NULL,
+    ->   `order_date` DATE NOT NULL,
+    ->   PRIMARY KEY (`order_id`)
+    -> );
+Query OK, 0 rows affected (0.60 sec)
+
+mysql>
+mysql> INSERT INTO `orders` (`product_name`, `quantity`, `order_date`)
+    -> VALUES
+    ->     ('Laptop', 5, '2023-01-10'),
+    ->     ('Smartphone', 10, '2023-02-15'),
+    ->     ('Headphones', 20, '2023-03-20');
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from orders;
++----------+--------------+----------+------------+
+| order_id | product_name | quantity | order_date |
++----------+--------------+----------+------------+
+|        1 | Laptop       |        5 | 2023-01-10 |
+|        2 | Smartphone   |       10 | 2023-02-15 |
+|        3 | Headphones   |       20 | 2023-03-20 |
++----------+--------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE VIEW `high_quantity_orders` AS
+    -> SELECT `order_id`, `product_name`, `quantity`, `order_date`
+    -> FROM  `orders`
+    -> WHERE `quantity` > 5;
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> SELECT * FROM `high_quantity_orders`;
++----------+--------------+----------+------------+
+| order_id | product_name | quantity | order_date |
++----------+--------------+----------+------------+
+|        2 | Smartphone   |       10 | 2023-02-15 |
+|        3 | Headphones   |       20 | 2023-03-20 |
++----------+--------------+----------+------------+
+2 rows in set (0.09 sec)

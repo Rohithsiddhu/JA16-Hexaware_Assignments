@@ -1,0 +1,21 @@
+
+<h2>Angular Reactive Form</h2>
+ 
+<form [formGroup]="IndiaDet" (ngSubmit)="submitForm()" >
+  <label for="field1">Player Name</label>
+  <input type="text" id="field1" formControlName="playerName"><br/>
+  <label for="field1">jersey Number</label>
+  <input type="number" id="field1" formControlName="jerserNumber"><br/>
+  <label for="field1">Role</label>
+  <input type="text" id="field1" formControlName="role"><br/>
+  <label for="field1">Total Matche</label>
+  <input type="number" id="field1" formControlName="totalMatches"><br/>
+  <label for="field1">Team Name</label>
+  <input type="text" id="field1" formControlName="teamName"><br/>
+  <label for="field1">Country Name</label>
+  <input type="text" id="field1" formControlName="countryName"><br/>
+  <label for="field1">Description</label>
+  <input type="text" id="field1" formControlName="description"><br/>
+
+  <button type="submit">Submit</button>
+</form> 

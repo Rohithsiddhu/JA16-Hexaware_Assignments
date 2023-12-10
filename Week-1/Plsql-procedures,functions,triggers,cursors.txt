@@ -1,0 +1,130 @@
+-- Create a procedure
+CREATE OR REPLACE PROCEDURE GetEmployeeInfoByDepartment(
+    p_department VARCHAR2
+) AS
+BEGIN
+    -- Cursor declaration
+    FOR employee_rec IN (SELECT * FROM employee WHERE department = p_department) LOOP
+        -- Output each employee's information
+        DBMS_OUTPUT.PUT_LINE('Employee ID: ' || employee_rec.eid);
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || employee_rec.ename);
+        DBMS_OUTPUT.PUT_LINE('Department: ' || employee_rec.department);
+        DBMS_OUTPUT.PUT_LINE('--------------------------');
+    END LOOP;
+END;
+/
+
+-- Anonymous block to execute the procedure
+BEGIN
+    GetEmployeeInfoByDepartment('IT');
+END;
+/
+
+
+-- Create a function
+CREATE OR REPLACE FUNCTION GetTotalSalaryByDepartment(
+    p_department VARCHAR2
+) RETURN NUMBER AS
+    total_salary NUMBER := 0;
+BEGIN
+    -- Calculate total salary for the specified department
+    SELECT SUM(salary) INTO total_salary
+    FROM employee
+    WHERE department = p_department;
+
+    -- Return the total salary
+    RETURN total_salary;
+END;
+/
+
+
+-- Anonymous block to use the function
+DECLARE
+    department_name VARCHAR2(50) := 'Finance';
+    total_salary_for_department NUMBER;
+BEGIN
+    -- Call the function to get the total salary for the Finance department
+    total_salary_for_department := GetTotalSalaryByDepartment(department_name);
+
+    -- Display the result
+    DBMS_OUTPUT.PUT_LINE('Total Salary for ' || department_name || ': ' || total_salary_for_department);
+END;
+/
+
+
+-- Create a trigger
+CREATE OR REPLACE TRIGGER UpdateTotalSalary
+AFTER INSERT ON employee
+FOR EACH ROW
+DECLARE
+    total_salary NUMBER;
+BEGIN
+    -- Calculate the total salary for the department
+    SELECT SUM(salary) INTO total_salary
+    FROM employee
+    WHERE department = :NEW.department;
+
+    -- Update the total salary in the department table
+    UPDATE department
+    SET total_salary = total_salary
+    WHERE dname = :NEW.department;
+END;
+/
+
+
+-- Insert a new employee
+INSERT INTO employee (ename, salary, job, department)
+VALUES ('New Employee', 60000, 'Analyst', 'Finance');
+
+
+-- Create a procedure with an explicit cursor
+CREATE OR REPLACE PROCEDURE ProcessEmployeesByDepartment(
+    p_department VARCHAR2
+) AS
+    -- Declare an explicit cursor
+    CURSOR employee_cursor IS
+        SELECT eid, ename, salary
+        FROM employee
+        WHERE department = p_department;
+
+    -- Declare variables to store cursor values
+    v_eid employee.eid%TYPE;
+    v_ename employee.ename%TYPE;
+    v_salary employee.salary%TYPE;
+BEGIN
+    -- Open the cursor
+    OPEN employee_cursor;
+
+    -- Fetch and process each row
+    LOOP
+        FETCH employee_cursor INTO v_eid, v_ename, v_salary;
+        EXIT WHEN employee_cursor%NOTFOUND;
+
+        -- Process the current row (for example, display the values)
+        DBMS_OUTPUT.PUT_LINE('Employee ID: ' || v_eid);
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_ename);
+        DBMS_OUTPUT.PUT_LINE('Salary: ' || v_salary);
+        DBMS_OUTPUT.PUT_LINE('--------------------------');
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE employee_cursor;
+END;
+/
+
+
+-- Create a procedure with an implicit cursor using FOR Loop
+CREATE OR REPLACE PROCEDURE ProcessEmployeesByDepartmentImplicit(
+    p_department VARCHAR2
+) AS
+BEGIN
+    -- Implicit cursor using FOR Loop
+    FOR employee_rec IN (SELECT eid, ename, salary FROM employee WHERE department = p_department) LOOP
+        -- Process the current row (for example, display the values)
+        DBMS_OUTPUT.PUT_LINE('Employee ID: ' || employee_rec.eid);
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || employee_rec.ename);
+        DBMS_OUTPUT.PUT_LINE('Salary: ' || employee_rec.salary);
+        DBMS_OUTPUT.PUT_LINE('--------------------------');
+    END LOOP;
+END;
+/
